@@ -8,7 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider";
 import {
   Home, MapPin, BedDouble, Maximize, Calculator,
-  Waves, TreePine, Car, Wifi, Snowflake, Shield, Building2, TrendingUp, Key, HandCoins
+  Waves, TreePine, Car, Wifi, Snowflake, Shield, Building2, TrendingUp, Key, HandCoins,
+  Bath, CookingPot, Layers, Sofa
 } from "lucide-react";
 
 const locations = [
@@ -31,6 +32,10 @@ const equipements = [
 interface FormData {
   surface: number;
   chambres: number;
+  sallesDeBain: number;
+  cuisines: number;
+  etage: number;
+  salons: number;
   localisation: string;
   equipements: Record<string, boolean>;
 }
