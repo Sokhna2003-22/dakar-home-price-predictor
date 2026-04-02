@@ -43,6 +43,10 @@ interface FormData {
 const initialForm: FormData = {
   surface: 150,
   chambres: 3,
+  sallesDeBain: 2,
+  cuisines: 1,
+  etage: 0,
+  salons: 1,
   localisation: "",
   equipements: Object.fromEntries(equipements.map((e) => [e.id, false])),
 };
