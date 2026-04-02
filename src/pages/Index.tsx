@@ -137,15 +137,57 @@ const PredictionForm = ({ type }: { type: "vente" | "location" }) => {
           <BedDouble className="h-4 w-4 text-accent" /> Nombre de chambres
         </Label>
         <div className="flex items-center gap-4">
-          <Slider
-            min={1}
-            max={10}
-            step={1}
-            value={[form.chambres]}
-            onValueChange={([v]) => setForm((p) => ({ ...p, chambres: v }))}
-            className="flex-1"
-          />
+          <Slider min={1} max={10} step={1} value={[form.chambres]}
+            onValueChange={([v]) => setForm((p) => ({ ...p, chambres: v }))} className="flex-1" />
           <span className="w-24 text-center font-bold text-lg">{form.chambres}</span>
+        </div>
+      </div>
+
+      {/* Salles de bain */}
+      <div className="space-y-2">
+        <Label className="flex items-center gap-2 text-sm font-semibold">
+          <Bath className="h-4 w-4 text-accent" /> Salles de bain
+        </Label>
+        <div className="flex items-center gap-4">
+          <Slider min={1} max={6} step={1} value={[form.sallesDeBain]}
+            onValueChange={([v]) => setForm((p) => ({ ...p, sallesDeBain: v }))} className="flex-1" />
+          <span className="w-24 text-center font-bold text-lg">{form.sallesDeBain}</span>
+        </div>
+      </div>
+
+      {/* Cuisines */}
+      <div className="space-y-2">
+        <Label className="flex items-center gap-2 text-sm font-semibold">
+          <CookingPot className="h-4 w-4 text-accent" /> Cuisines
+        </Label>
+        <div className="flex items-center gap-4">
+          <Slider min={1} max={4} step={1} value={[form.cuisines]}
+            onValueChange={([v]) => setForm((p) => ({ ...p, cuisines: v }))} className="flex-1" />
+          <span className="w-24 text-center font-bold text-lg">{form.cuisines}</span>
+        </div>
+      </div>
+
+      {/* Étage */}
+      <div className="space-y-2">
+        <Label className="flex items-center gap-2 text-sm font-semibold">
+          <Layers className="h-4 w-4 text-accent" /> Étage
+        </Label>
+        <div className="flex items-center gap-4">
+          <Slider min={0} max={20} step={1} value={[form.etage]}
+            onValueChange={([v]) => setForm((p) => ({ ...p, etage: v }))} className="flex-1" />
+          <span className="w-24 text-center font-bold text-lg">{form.etage}</span>
+        </div>
+      </div>
+
+      {/* Salons */}
+      <div className="space-y-2">
+        <Label className="flex items-center gap-2 text-sm font-semibold">
+          <Sofa className="h-4 w-4 text-accent" /> Salons
+        </Label>
+        <div className="flex items-center gap-4">
+          <Slider min={1} max={5} step={1} value={[form.salons]}
+            onValueChange={([v]) => setForm((p) => ({ ...p, salons: v }))} className="flex-1" />
+          <span className="w-24 text-center font-bold text-lg">{form.salons}</span>
         </div>
       </div>
 
