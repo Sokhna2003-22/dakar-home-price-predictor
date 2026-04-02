@@ -8,7 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider";
 import {
   Home, MapPin, BedDouble, Maximize, Calculator,
-  Waves, TreePine, Car, Wifi, Snowflake, Shield, Building2, TrendingUp, Key, HandCoins
+  Waves, TreePine, Car, Wifi, Snowflake, Shield, Building2, TrendingUp, Key, HandCoins,
+  Bath, CookingPot, Layers, Sofa
 } from "lucide-react";
 
 const locations = [
@@ -31,6 +32,10 @@ const equipements = [
 interface FormData {
   surface: number;
   chambres: number;
+  sallesDeBain: number;
+  cuisines: number;
+  etage: number;
+  salons: number;
   localisation: string;
   equipements: Record<string, boolean>;
 }
@@ -38,6 +43,10 @@ interface FormData {
 const initialForm: FormData = {
   surface: 150,
   chambres: 3,
+  sallesDeBain: 2,
+  cuisines: 1,
+  etage: 0,
+  salons: 1,
   localisation: "",
   equipements: Object.fromEntries(equipements.map((e) => [e.id, false])),
 };
@@ -59,13 +68,21 @@ function simulatePrice(data: FormData, type: "vente" | "location"): number | nul
   if (type === "vente") {
     const base = data.surface * 650000;
     const chambreBonus = data.chambres * 5000000;
+    const sdbBonus = data.sallesDeBain * 3000000;
+    const cuisineBonus = data.cuisines * 2000000;
+    const etageBonus = data.etage * 500000;
+    const salonBonus = data.salons * 4000000;
     const eqBonus = eqCount * 3500000;
-    return Math.round((base + chambreBonus + eqBonus) * coeff);
+    return Math.round((base + chambreBonus + sdbBonus + cuisineBonus + etageBonus + salonBonus + eqBonus) * coeff);
   } else {
     const base = data.surface * 3500;
     const chambreBonus = data.chambres * 25000;
+    const sdbBonus = data.sallesDeBain * 15000;
+    const cuisineBonus = data.cuisines * 10000;
+    const etageBonus = data.etage * 3000;
+    const salonBonus = data.salons * 20000;
     const eqBonus = eqCount * 15000;
-    return Math.round((base + chambreBonus + eqBonus) * coeff);
+    return Math.round((base + chambreBonus + sdbBonus + cuisineBonus + etageBonus + salonBonus + eqBonus) * coeff);
   }
 }
 
@@ -120,15 +137,57 @@ const PredictionForm = ({ type }: { type: "vente" | "location" }) => {
           <BedDouble className="h-4 w-4 text-accent" /> Nombre de chambres
         </Label>
         <div className="flex items-center gap-4">
-          <Slider
-            min={1}
-            max={10}
-            step={1}
-            value={[form.chambres]}
-            onValueChange={([v]) => setForm((p) => ({ ...p, chambres: v }))}
-            className="flex-1"
-          />
+          <Slider min={1} max={10} step={1} value={[form.chambres]}
+            onValueChange={([v]) => setForm((p) => ({ ...p, chambres: v }))} className="flex-1" />
           <span className="w-24 text-center font-bold text-lg">{form.chambres}</span>
+        </div>
+      </div>
+
+      {/* Salles de bain */}
+      <div className="space-y-2">
+        <Label className="flex items-center gap-2 text-sm font-semibold">
+          <Bath className="h-4 w-4 text-accent" /> Salles de bain
+        </Label>
+        <div className="flex items-center gap-4">
+          <Slider min={1} max={6} step={1} value={[form.sallesDeBain]}
+            onValueChange={([v]) => setForm((p) => ({ ...p, sallesDeBain: v }))} className="flex-1" />
+          <span className="w-24 text-center font-bold text-lg">{form.sallesDeBain}</span>
+        </div>
+      </div>
+
+      {/* Cuisines */}
+      <div className="space-y-2">
+        <Label className="flex items-center gap-2 text-sm font-semibold">
+          <CookingPot className="h-4 w-4 text-accent" /> Cuisines
+        </Label>
+        <div className="flex items-center gap-4">
+          <Slider min={1} max={4} step={1} value={[form.cuisines]}
+            onValueChange={([v]) => setForm((p) => ({ ...p, cuisines: v }))} className="flex-1" />
+          <span className="w-24 text-center font-bold text-lg">{form.cuisines}</span>
+        </div>
+      </div>
+
+      {/* Étage */}
+      <div className="space-y-2">
+        <Label className="flex items-center gap-2 text-sm font-semibold">
+          <Layers className="h-4 w-4 text-accent" /> Étage
+        </Label>
+        <div className="flex items-center gap-4">
+          <Slider min={0} max={20} step={1} value={[form.etage]}
+            onValueChange={([v]) => setForm((p) => ({ ...p, etage: v }))} className="flex-1" />
+          <span className="w-24 text-center font-bold text-lg">{form.etage}</span>
+        </div>
+      </div>
+
+      {/* Salons */}
+      <div className="space-y-2">
+        <Label className="flex items-center gap-2 text-sm font-semibold">
+          <Sofa className="h-4 w-4 text-accent" /> Salons
+        </Label>
+        <div className="flex items-center gap-4">
+          <Slider min={1} max={5} step={1} value={[form.salons]}
+            onValueChange={([v]) => setForm((p) => ({ ...p, salons: v }))} className="flex-1" />
+          <span className="w-24 text-center font-bold text-lg">{form.salons}</span>
         </div>
       </div>
 
