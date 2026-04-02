@@ -68,13 +68,21 @@ function simulatePrice(data: FormData, type: "vente" | "location"): number | nul
   if (type === "vente") {
     const base = data.surface * 650000;
     const chambreBonus = data.chambres * 5000000;
+    const sdbBonus = data.sallesDeBain * 3000000;
+    const cuisineBonus = data.cuisines * 2000000;
+    const etageBonus = data.etage * 500000;
+    const salonBonus = data.salons * 4000000;
     const eqBonus = eqCount * 3500000;
-    return Math.round((base + chambreBonus + eqBonus) * coeff);
+    return Math.round((base + chambreBonus + sdbBonus + cuisineBonus + etageBonus + salonBonus + eqBonus) * coeff);
   } else {
     const base = data.surface * 3500;
     const chambreBonus = data.chambres * 25000;
+    const sdbBonus = data.sallesDeBain * 15000;
+    const cuisineBonus = data.cuisines * 10000;
+    const etageBonus = data.etage * 3000;
+    const salonBonus = data.salons * 20000;
     const eqBonus = eqCount * 15000;
-    return Math.round((base + chambreBonus + eqBonus) * coeff);
+    return Math.round((base + chambreBonus + sdbBonus + cuisineBonus + etageBonus + salonBonus + eqBonus) * coeff);
   }
 }
 
