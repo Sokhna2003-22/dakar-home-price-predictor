@@ -1,4 +1,4 @@
-const API_URL = "https://immobilier-api-a87u.onrender.com";
+const API_URL = "/api";
 
 export interface PredictionRequest {
   surface: number;
