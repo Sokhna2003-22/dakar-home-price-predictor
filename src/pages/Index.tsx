@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -37,6 +38,7 @@ interface FormData {
   etage: number;
   salons: number;
   localisation: string;
+  customLocalisation: string;
   equipements: Record<string, boolean>;
 }
 
@@ -48,6 +50,7 @@ const initialForm: FormData = {
   etage: 0,
   salons: 1,
   localisation: "",
+  customLocalisation: "",
   equipements: Object.fromEntries(equipements.map((e) => [e.id, false])),
 };
 
@@ -56,23 +59,10 @@ function formatCFA(value: number): string {
 }
 
 const SliderField = ({
-  icon: Icon,
-  label,
-  value,
-  min,
-  max,
-  step,
-  onChange,
-  unit,
+  icon: Icon, label, value, min, max, step, onChange, unit,
 }: {
-  icon: React.ElementType;
-  label: string;
-  value: number;
-  min: number;
-  max: number;
-  step: number;
-  onChange: (v: number) => void;
-  unit?: string;
+  icon: React.ElementType; label: string; value: number;
+  min: number; max: number; step: number; onChange: (v: number) => void; unit?: string;
 }) => (
   <div className="space-y-3">
     <div className="flex items-center justify-between">
@@ -83,14 +73,7 @@ const SliderField = ({
         {value}{unit}
       </span>
     </div>
-    <Slider
-      min={min}
-      max={max}
-      step={step}
-      value={[value]}
-      onValueChange={([v]) => onChange(v)}
-      className="w-full"
-    />
+    <Slider min={min} max={max} step={step} value={[value]} onValueChange={([v]) => onChange(v)} className="w-full" />
   </div>
 );
 
@@ -100,6 +83,8 @@ const PredictionForm = ({ type }: { type: "vente" | "location" }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const finalLocalisation = form.localisation === "__autre__" ? form.customLocalisation : form.localisation;
+
   const toggleEquipement = (id: string) => {
     setForm((prev) => ({
       ...prev,
@@ -108,8 +93,8 @@ const PredictionForm = ({ type }: { type: "vente" | "location" }) => {
   };
 
   const handlePredict = async () => {
-    if (!form.localisation) {
-      setError("Veuillez sélectionner un quartier.");
+    if (!finalLocalisation.trim()) {
+      setError("Veuillez sélectionner ou saisir un quartier.");
       return;
     }
     setLoading(true);
@@ -122,7 +107,7 @@ const PredictionForm = ({ type }: { type: "vente" | "location" }) => {
         cuisines: form.cuisines,
         etage: form.etage,
         salons: form.salons,
-        localisation: form.localisation,
+        localisation: finalLocalisation,
         ascenseur: form.equipements.ascenseur ? 1 : 0,
         jardin: form.equipements.jardin ? 1 : 0,
         parking: form.equipements.parking ? 1 : 0,
@@ -162,7 +147,7 @@ const PredictionForm = ({ type }: { type: "vente" | "location" }) => {
         <Label className="flex items-center gap-2 text-sm font-medium text-foreground/80">
           <MapPin className="h-4 w-4 text-primary" /> Localisation
         </Label>
-        <Select value={form.localisation} onValueChange={(v) => setForm((p) => ({ ...p, localisation: v }))}>
+        <Select value={form.localisation} onValueChange={(v) => setForm((p) => ({ ...p, localisation: v, customLocalisation: "" }))}>
           <SelectTrigger className="h-11">
             <SelectValue placeholder="Choisir un quartier..." />
           </SelectTrigger>
@@ -170,8 +155,17 @@ const PredictionForm = ({ type }: { type: "vente" | "location" }) => {
             {locations.map((loc) => (
               <SelectItem key={loc} value={loc}>{loc}</SelectItem>
             ))}
+            <SelectItem value="__autre__">✏️ Autre (saisir manuellement)</SelectItem>
           </SelectContent>
         </Select>
+        {form.localisation === "__autre__" && (
+          <Input
+            placeholder="Entrez le nom du quartier..."
+            value={form.customLocalisation}
+            onChange={(e) => setForm((p) => ({ ...p, customLocalisation: e.target.value }))}
+            className="h-11 mt-2"
+          />
+        )}
       </div>
 
       {/* Équipements */}
@@ -208,23 +202,17 @@ const PredictionForm = ({ type }: { type: "vente" | "location" }) => {
         className="w-full h-12 text-sm font-semibold gap-2 rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all"
         size="lg"
       >
-        {loading ? (
-          <Loader2 className="h-5 w-5 animate-spin" />
-        ) : (
-          <Calculator className="h-5 w-5" />
-        )}
+        {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Calculator className="h-5 w-5" />}
         {loading ? "Calcul en cours..." : type === "vente" ? "Estimer le prix de vente" : "Estimer le loyer mensuel"}
       </Button>
 
-      {error && (
-        <p className="text-sm text-destructive text-center font-medium">{error}</p>
-      )}
+      {error && <p className="text-sm text-destructive text-center font-medium">{error}</p>}
 
       {/* Résultat */}
       {prediction !== null && !loading && (
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-secondary/10 border border-primary/20 p-6">
           <div className="absolute top-2 right-2">
-            <Sparkles className="h-5 w-5 text-primary/30" />
+            <Sparkles className="h-5 w-5 text-secondary/40" />
           </div>
           <div className="flex flex-col items-center gap-2">
             <TrendingUp className="h-8 w-8 text-primary" />
@@ -234,9 +222,7 @@ const PredictionForm = ({ type }: { type: "vente" | "location" }) => {
             <p className="text-3xl sm:text-4xl font-extrabold text-primary tracking-tight">
               {formatCFA(prediction)}
             </p>
-            {type === "location" && (
-              <p className="text-xs text-muted-foreground">par mois</p>
-            )}
+            {type === "location" && <p className="text-xs text-muted-foreground">par mois</p>}
           </div>
         </div>
       )}
@@ -254,7 +240,7 @@ const Index = () => {
             <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-md shadow-primary/20">
               <Home className="h-4 w-4 text-primary-foreground" />
             </div>
-            <span className="text-base font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+            <span className="text-base font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               DakarImmo
             </span>
           </div>
@@ -296,19 +282,13 @@ const Index = () => {
                   </TabsTrigger>
                 </TabsList>
               </div>
-
               <div className="p-5">
-                <TabsContent value="vente" className="mt-0">
-                  <PredictionForm type="vente" />
-                </TabsContent>
-                <TabsContent value="location" className="mt-0">
-                  <PredictionForm type="location" />
-                </TabsContent>
+                <TabsContent value="vente" className="mt-0"><PredictionForm type="vente" /></TabsContent>
+                <TabsContent value="location" className="mt-0"><PredictionForm type="location" /></TabsContent>
               </div>
             </Tabs>
           </CardContent>
         </Card>
-
         <p className="text-center text-xs text-muted-foreground mt-6">
           Les estimations sont basées sur un modèle d'apprentissage automatique et peuvent varier.
         </p>
