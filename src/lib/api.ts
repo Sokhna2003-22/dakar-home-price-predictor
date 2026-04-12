@@ -9,7 +9,6 @@ export interface PredictionRequest {
   cuisines: number;
   etage: number;
   salons: number;
-  localisation: string;
   ascenseur: number;
   jardin: number;
   parking: number;
@@ -20,21 +19,20 @@ export interface PredictionRequest {
 }
 
 interface ApiPredictionRequest {
-  Surface: number;
-  Chambres: number;
-  Salles_de_bain: number;
-  Cuisines: number;
-  Etage: number;
-  Salons: number;
-  Localisation: string;
-  Type: "Vente" | "Location";
+  Nb_Chambres: number;
+  Nb_Salles_Bain: number;
+  Surface_m2: number;
   Ascenseur: number;
   Jardin: number;
-  Parking: number;
+  Surveillance: number;
   Internet: number;
+  Parking: number;
   Piscine: number;
   Climatisation: number;
-  Surveillance: number;
+  Nb_Salons: number;
+  Nb_Cuisines: number;
+  Nb_Etages: number;
+  Type: "Vente" | "Location";
 }
 
 export interface PredictionResponse {
@@ -43,21 +41,20 @@ export interface PredictionResponse {
 
 function toApiPayload(data: PredictionRequest, type: PredictionType): ApiPredictionRequest {
   return {
-    Surface: data.surface,
-    Chambres: data.chambres,
-    Salles_de_bain: data.salles_de_bain,
-    Cuisines: data.cuisines,
-    Etage: data.etage,
-    Salons: data.salons,
-    Localisation: data.localisation,
-    Type: type === "vente" ? "Vente" : "Location",
+    Nb_Chambres: data.chambres,
+    Nb_Salles_Bain: data.salles_de_bain,
+    Surface_m2: data.surface,
     Ascenseur: data.ascenseur,
     Jardin: data.jardin,
-    Parking: data.parking,
+    Surveillance: data.surveillance,
     Internet: data.internet,
+    Parking: data.parking,
     Piscine: data.piscine,
     Climatisation: data.climatisation,
-    Surveillance: data.surveillance,
+    Nb_Salons: data.salons,
+    Nb_Cuisines: data.cuisines,
+    Nb_Etages: data.etage,
+    Type: type === "vente" ? "Vente" : "Location",
   };
 }
 
@@ -70,16 +67,14 @@ export async function predictPrice(data: PredictionRequest, type: PredictionType
 
   if (!response.ok) {
     let message = `Erreur API: ${response.status}`;
-
     try {
       const errorData = await response.json();
       if (typeof errorData?.error === "string" && errorData.error.trim()) {
         message = errorData.error;
       }
     } catch {
-      // Ignore non-JSON error bodies and keep the fallback message.
+      // ignore
     }
-
     throw new Error(message);
   }
 
