@@ -1,24 +1,16 @@
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { predictPrice, type PredictionRequest, type PredictionType } from "@/lib/api";
 import {
-  Home, MapPin, BedDouble, Maximize, Calculator,
+  Home, BedDouble, Maximize, Calculator,
   Waves, TreePine, Car, Wifi, Snowflake, Shield, Building2, TrendingUp, Key, HandCoins,
   Bath, CookingPot, Layers, Sofa, Loader2, Sparkles
 } from "lucide-react";
 
-const locations = [
-  "Almadies", "Plateau", "Ngor", "Mermoz", "Fann", "Point E",
-  "Ouakam", "Yoff", "Liberté", "Sacré-Cœur", "Mamelles",
-  "Dakar Plateau", "Médina", "Grand Dakar", "Parcelles Assainies",
-  "Guédiawaye", "Pikine", "Rufisque", "Diamniadio", "Saly",
-];
 
 const equipements = [
   { id: "ascenseur", label: "Ascenseur", icon: Building2 },
@@ -37,8 +29,6 @@ interface FormData {
   cuisines: number;
   etage: number;
   salons: number;
-  localisation: string;
-  customLocalisation: string;
   equipements: Record<string, boolean>;
 }
 
@@ -49,8 +39,6 @@ const initialForm: FormData = {
   cuisines: 1,
   etage: 0,
   salons: 1,
-  localisation: "",
-  customLocalisation: "",
   equipements: Object.fromEntries(equipements.map((e) => [e.id, false])),
 };
 
@@ -83,8 +71,6 @@ const PredictionForm = ({ type }: { type: PredictionType }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const finalLocalisation = form.localisation === "__autre__" ? form.customLocalisation : form.localisation;
-
   const toggleEquipement = (id: string) => {
     setForm((prev) => ({
       ...prev,
@@ -93,10 +79,6 @@ const PredictionForm = ({ type }: { type: PredictionType }) => {
   };
 
   const handlePredict = async () => {
-    if (!finalLocalisation.trim()) {
-      setError("Veuillez sélectionner ou saisir un quartier.");
-      return;
-    }
     setLoading(true);
     setError(null);
     try {
@@ -107,7 +89,6 @@ const PredictionForm = ({ type }: { type: PredictionType }) => {
         cuisines: form.cuisines,
         etage: form.etage,
         salons: form.salons,
-        localisation: finalLocalisation,
         ascenseur: form.equipements.ascenseur ? 1 : 0,
         jardin: form.equipements.jardin ? 1 : 0,
         parking: form.equipements.parking ? 1 : 0,
@@ -142,31 +123,6 @@ const PredictionForm = ({ type }: { type: PredictionType }) => {
           onChange={(v) => setForm((p) => ({ ...p, salons: v }))} />
       </div>
 
-      {/* Localisation */}
-      <div className="space-y-2">
-        <Label className="flex items-center gap-2 text-sm font-medium text-foreground/80">
-          <MapPin className="h-4 w-4 text-primary" /> Localisation
-        </Label>
-        <Select value={form.localisation} onValueChange={(v) => setForm((p) => ({ ...p, localisation: v, customLocalisation: "" }))}>
-          <SelectTrigger className="h-11">
-            <SelectValue placeholder="Choisir un quartier..." />
-          </SelectTrigger>
-          <SelectContent>
-            {locations.map((loc) => (
-              <SelectItem key={loc} value={loc}>{loc}</SelectItem>
-            ))}
-            <SelectItem value="__autre__">✏️ Autre (saisir manuellement)</SelectItem>
-          </SelectContent>
-        </Select>
-        {form.localisation === "__autre__" && (
-          <Input
-            placeholder="Entrez le nom du quartier..."
-            value={form.customLocalisation}
-            onChange={(e) => setForm((p) => ({ ...p, customLocalisation: e.target.value }))}
-            className="h-11 mt-2"
-          />
-        )}
-      </div>
 
       {/* Équipements */}
       <div className="space-y-3">

@@ -4,74 +4,74 @@
 
 @layer base {
   :root {
-    --background: 36 33% 96%;
-    --foreground: 200 26% 16%;
+    --background: 220 20% 97%;
+    --foreground: 224 30% 14%;
 
     --card: 0 0% 100%;
-    --card-foreground: 200 26% 16%;
+    --card-foreground: 224 30% 14%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 200 26% 16%;
+    --popover-foreground: 224 30% 14%;
 
-    --primary: 173 64% 30%;
-    --primary-foreground: 42 60% 98%;
+    --primary: 252 56% 58%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 24 92% 63%;
-    --secondary-foreground: 20 30% 15%;
+    --secondary: 340 72% 62%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 36 28% 90%;
-    --muted-foreground: 200 14% 38%;
+    --muted: 220 16% 92%;
+    --muted-foreground: 220 12% 46%;
 
-    --accent: 42 84% 58%;
-    --accent-foreground: 20 30% 15%;
+    --accent: 36 96% 56%;
+    --accent-foreground: 24 40% 14%;
 
     --destructive: 0 72% 52%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 32 24% 82%;
-    --input: 32 24% 82%;
-    --ring: 173 64% 30%;
+    --border: 220 16% 88%;
+    --input: 220 16% 88%;
+    --ring: 252 56% 58%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 42 35% 97%;
-    --sidebar-foreground: 200 24% 18%;
-    --sidebar-primary: 173 64% 30%;
-    --sidebar-primary-foreground: 42 60% 98%;
-    --sidebar-accent: 36 30% 92%;
-    --sidebar-accent-foreground: 200 26% 16%;
-    --sidebar-border: 32 24% 82%;
-    --sidebar-ring: 173 64% 30%;
+    --sidebar-background: 220 20% 97%;
+    --sidebar-foreground: 224 30% 14%;
+    --sidebar-primary: 252 56% 58%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 16% 93%;
+    --sidebar-accent-foreground: 224 30% 14%;
+    --sidebar-border: 220 16% 88%;
+    --sidebar-ring: 252 56% 58%;
   }
 
   .dark {
-    --background: 201 33% 10%;
-    --foreground: 39 36% 94%;
-    --card: 198 29% 14%;
-    --card-foreground: 39 36% 94%;
-    --popover: 198 29% 14%;
-    --popover-foreground: 39 36% 94%;
-    --primary: 170 56% 48%;
-    --primary-foreground: 201 33% 10%;
-    --secondary: 24 90% 64%;
-    --secondary-foreground: 20 32% 12%;
-    --muted: 198 22% 20%;
-    --muted-foreground: 38 18% 72%;
-    --accent: 42 78% 58%;
-    --accent-foreground: 22 30% 12%;
+    --background: 228 24% 8%;
+    --foreground: 220 20% 94%;
+    --card: 226 22% 12%;
+    --card-foreground: 220 20% 94%;
+    --popover: 226 22% 12%;
+    --popover-foreground: 220 20% 94%;
+    --primary: 252 56% 64%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 340 68% 64%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 226 18% 18%;
+    --muted-foreground: 220 14% 58%;
+    --accent: 36 90% 56%;
+    --accent-foreground: 24 40% 10%;
     --destructive: 0 66% 44%;
     --destructive-foreground: 0 0% 100%;
-    --border: 198 20% 22%;
-    --input: 198 20% 22%;
-    --ring: 170 56% 48%;
-    --sidebar-background: 201 33% 11%;
-    --sidebar-foreground: 39 36% 94%;
-    --sidebar-primary: 170 56% 48%;
-    --sidebar-primary-foreground: 201 33% 10%;
-    --sidebar-accent: 198 24% 18%;
-    --sidebar-accent-foreground: 39 36% 94%;
-    --sidebar-border: 198 20% 22%;
-    --sidebar-ring: 170 56% 48%;
+    --border: 226 16% 20%;
+    --input: 226 16% 20%;
+    --ring: 252 56% 64%;
+    --sidebar-background: 228 24% 9%;
+    --sidebar-foreground: 220 20% 94%;
+    --sidebar-primary: 252 56% 64%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 226 18% 16%;
+    --sidebar-accent-foreground: 220 20% 94%;
+    --sidebar-border: 226 16% 20%;
+    --sidebar-ring: 252 56% 64%;
   }
 }
 
@@ -83,8 +83,8 @@
     @apply bg-background text-foreground;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     background-image:
-      radial-gradient(circle at top left, hsl(var(--secondary) / 0.14), transparent 28%),
-      radial-gradient(circle at bottom right, hsl(var(--primary) / 0.14), transparent 34%);
+      radial-gradient(circle at top left, hsl(var(--primary) / 0.08), transparent 30%),
+      radial-gradient(circle at bottom right, hsl(var(--secondary) / 0.08), transparent 30%);
     background-attachment: fixed;
   }
 }
