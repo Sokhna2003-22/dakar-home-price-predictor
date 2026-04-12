@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
-import { predictPrice, type PredictionRequest } from "@/lib/api";
+import { predictPrice, type PredictionRequest, type PredictionType } from "@/lib/api";
 import {
   Home, MapPin, BedDouble, Maximize, Calculator,
   Waves, TreePine, Car, Wifi, Snowflake, Shield, Building2, TrendingUp, Key, HandCoins,
@@ -77,7 +77,7 @@ const SliderField = ({
   </div>
 );
 
-const PredictionForm = ({ type }: { type: "vente" | "location" }) => {
+const PredictionForm = ({ type }: { type: PredictionType }) => {
   const [form, setForm] = useState<FormData>(initialForm);
   const [prediction, setPrediction] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
@@ -116,10 +116,10 @@ const PredictionForm = ({ type }: { type: "vente" | "location" }) => {
         climatisation: form.equipements.climatisation ? 1 : 0,
         surveillance: form.equipements.surveillance ? 1 : 0,
       };
-      const result = await predictPrice(payload);
+      const result = await predictPrice(payload, type);
       setPrediction(result.prix_estime);
-    } catch {
-      setError("Erreur lors de la prédiction. Réessayez.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erreur lors de la prédiction. Réessayez.");
     } finally {
       setLoading(false);
     }
