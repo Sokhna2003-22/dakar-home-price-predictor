@@ -16,6 +16,7 @@ export interface PredictionRequest {
   piscine: number;
   climatisation: number;
   surveillance: number;
+  localisation: string;
 }
 
 interface ApiPredictionRequest {
@@ -32,6 +33,7 @@ interface ApiPredictionRequest {
   Nb_Salons: number;
   Nb_Cuisines: number;
   Nb_Etages: number;
+  Localisation: string;
   Type: "Vente" | "Location";
 }
 
@@ -54,6 +56,7 @@ function toApiPayload(data: PredictionRequest, type: PredictionType): ApiPredict
     Nb_Salons: data.salons,
     Nb_Cuisines: data.cuisines,
     Nb_Etages: data.etage,
+    Localisation: data.localisation,
     Type: type === "vente" ? "Vente" : "Location",
   };
 }
