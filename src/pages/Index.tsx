@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
+import { Input } from "@/components/ui/input";
 import { predictPrice, type PredictionRequest, type PredictionType } from "@/lib/api";
+import { LOCATIONS } from "@/lib/locations";
 import {
-  Home, BedDouble, Maximize, Calculator,
+  Home, BedDouble, Maximize, Calculator, MapPin,
   Waves, TreePine, Car, Wifi, Snowflake, Shield, Building2, TrendingUp, Key, HandCoins,
   Bath, CookingPot, Layers, Sofa, Loader2, Sparkles
 } from "lucide-react";
@@ -29,6 +31,7 @@ interface FormData {
   cuisines: number;
   etage: number;
   salons: number;
+  localisation: string;
   equipements: Record<string, boolean>;
 }
 
@@ -39,6 +42,7 @@ const initialForm: FormData = {
   cuisines: 1,
   etage: 0,
   salons: 1,
+  localisation: "",
   equipements: Object.fromEntries(equipements.map((e) => [e.id, false])),
 };
 
@@ -70,6 +74,14 @@ const PredictionForm = ({ type }: { type: PredictionType }) => {
   const [prediction, setPrediction] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [locSearch, setLocSearch] = useState("");
+  const [locOpen, setLocOpen] = useState(false);
+
+  const filteredLocations = useMemo(() => {
+    if (!locSearch) return [...LOCATIONS];
+    const q = locSearch.toLowerCase();
+    return LOCATIONS.filter((l) => l.toLowerCase().includes(q));
+  }, [locSearch]);
 
   const toggleEquipement = (id: string) => {
     setForm((prev) => ({
@@ -82,6 +94,11 @@ const PredictionForm = ({ type }: { type: PredictionType }) => {
     setLoading(true);
     setError(null);
     try {
+      if (!form.localisation) {
+        setError("Veuillez sélectionner une localisation.");
+        setLoading(false);
+        return;
+      }
       const payload: PredictionRequest = {
         surface: form.surface,
         chambres: form.chambres,
@@ -89,6 +106,7 @@ const PredictionForm = ({ type }: { type: PredictionType }) => {
         cuisines: form.cuisines,
         etage: form.etage,
         salons: form.salons,
+        localisation: form.localisation,
         ascenseur: form.equipements.ascenseur ? 1 : 0,
         jardin: form.equipements.jardin ? 1 : 0,
         parking: form.equipements.parking ? 1 : 0,
