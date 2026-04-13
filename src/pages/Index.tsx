@@ -141,7 +141,48 @@ const PredictionForm = ({ type }: { type: PredictionType }) => {
           onChange={(v) => setForm((p) => ({ ...p, salons: v }))} />
       </div>
 
-
+      {/* Localisation */}
+      <div className="space-y-3 relative">
+        <Label className="flex items-center gap-2 text-sm font-medium text-foreground/80">
+          <MapPin className="h-4 w-4 text-primary" /> Localisation
+        </Label>
+        <div className="relative">
+          <Input
+            placeholder="Rechercher un quartier..."
+            value={form.localisation || locSearch}
+            onChange={(e) => {
+              setLocSearch(e.target.value);
+              setForm((p) => ({ ...p, localisation: "" }));
+              setLocOpen(true);
+            }}
+            onFocus={() => setLocOpen(true)}
+            className="w-full"
+          />
+          {locOpen && filteredLocations.length > 0 && (
+            <div className="absolute z-50 mt-1 w-full max-h-48 overflow-y-auto rounded-xl border border-border bg-popover shadow-lg">
+              {filteredLocations.map((loc) => (
+                <button
+                  key={loc}
+                  type="button"
+                  onClick={() => {
+                    setForm((p) => ({ ...p, localisation: loc }));
+                    setLocSearch("");
+                    setLocOpen(false);
+                  }}
+                  className="w-full text-left px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground transition-colors"
+                >
+                  {loc}
+                </button>
+              ))}
+            </div>
+          )}
+          {locOpen && filteredLocations.length === 0 && locSearch && (
+            <div className="absolute z-50 mt-1 w-full rounded-xl border border-border bg-popover shadow-lg p-3 text-sm text-muted-foreground">
+              Aucun quartier trouvé
+            </div>
+          )}
+        </div>
+      </div>
       {/* Équipements */}
       <div className="space-y-3">
         <Label className="flex items-center gap-2 text-sm font-medium text-foreground/80">
