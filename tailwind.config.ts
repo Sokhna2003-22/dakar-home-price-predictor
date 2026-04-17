@@ -47,6 +47,16 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        "side-panel": {
+          DEFAULT: "hsl(var(--side-panel))",
+          foreground: "hsl(var(--side-panel-foreground))",
+        },
+        "form-panel": {
+          DEFAULT: "hsl(var(--form-panel))",
+          foreground: "hsl(var(--form-panel-foreground))",
+        },
+        "chip-active": "hsl(var(--chip-active))",
+        "chip-inactive": "hsl(var(--chip-inactive))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
