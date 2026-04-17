@@ -4,74 +4,92 @@
 
 @layer base {
   :root {
-    --background: 220 20% 97%;
-    --foreground: 224 30% 14%;
+    /* Palette inspirée: pêche, mauve, crème */
+    --background: 22 45% 78%;         /* fond pêche/terre */
+    --foreground: 250 15% 18%;
 
     --card: 0 0% 100%;
-    --card-foreground: 224 30% 14%;
+    --card-foreground: 250 15% 18%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 224 30% 14%;
+    --popover-foreground: 250 15% 18%;
 
-    --primary: 252 56% 58%;
+    /* Mauve principal (panneau latéral / boutons sombres) */
+    --primary: 252 14% 45%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 340 72% 62%;
-    --secondary-foreground: 0 0% 100%;
+    /* Pêche/rose (panneau formulaire & accents) */
+    --secondary: 14 60% 82%;
+    --secondary-foreground: 250 15% 18%;
 
-    --muted: 220 16% 92%;
-    --muted-foreground: 220 12% 46%;
+    --muted: 20 30% 92%;
+    --muted-foreground: 250 10% 40%;
 
-    --accent: 36 96% 56%;
-    --accent-foreground: 24 40% 14%;
+    /* Accent rose actif (chip sélectionné) */
+    --accent: 8 70% 72%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 52%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 16% 88%;
-    --input: 220 16% 88%;
-    --ring: 252 56% 58%;
+    --border: 20 25% 86%;
+    --input: 20 25% 88%;
+    --ring: 252 14% 45%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
+
+    /* Couleurs spécifiques au design */
+    --side-panel: 252 14% 52%;        /* mauve du panneau gauche */
+    --side-panel-foreground: 0 0% 100%;
+    --form-panel: 14 65% 84%;         /* pêche du panneau droit */
+    --form-panel-foreground: 250 15% 18%;
+    --chip-active: 8 72% 70%;         /* rose saumon actif */
+    --chip-inactive: 0 0% 100%;
 
     --sidebar-background: 220 20% 97%;
     --sidebar-foreground: 224 30% 14%;
-    --sidebar-primary: 252 56% 58%;
+    --sidebar-primary: 252 14% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 220 16% 93%;
     --sidebar-accent-foreground: 224 30% 14%;
     --sidebar-border: 220 16% 88%;
-    --sidebar-ring: 252 56% 58%;
+    --sidebar-ring: 252 14% 45%;
   }
 
   .dark {
-    --background: 228 24% 8%;
-    --foreground: 220 20% 94%;
-    --card: 226 22% 12%;
-    --card-foreground: 220 20% 94%;
-    --popover: 226 22% 12%;
-    --popover-foreground: 220 20% 94%;
-    --primary: 252 56% 64%;
+    --background: 250 15% 12%;
+    --foreground: 20 30% 92%;
+    --card: 250 15% 16%;
+    --card-foreground: 20 30% 92%;
+    --popover: 250 15% 16%;
+    --popover-foreground: 20 30% 92%;
+    --primary: 252 20% 60%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 340 68% 64%;
+    --secondary: 14 40% 60%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 226 18% 18%;
-    --muted-foreground: 220 14% 58%;
-    --accent: 36 90% 56%;
-    --accent-foreground: 24 40% 10%;
+    --muted: 250 12% 22%;
+    --muted-foreground: 20 15% 70%;
+    --accent: 8 60% 60%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 66% 44%;
     --destructive-foreground: 0 0% 100%;
-    --border: 226 16% 20%;
-    --input: 226 16% 20%;
-    --ring: 252 56% 64%;
-    --sidebar-background: 228 24% 9%;
-    --sidebar-foreground: 220 20% 94%;
-    --sidebar-primary: 252 56% 64%;
+    --border: 250 12% 24%;
+    --input: 250 12% 24%;
+    --ring: 252 20% 60%;
+    --side-panel: 252 18% 32%;
+    --side-panel-foreground: 0 0% 100%;
+    --form-panel: 14 35% 30%;
+    --form-panel-foreground: 20 30% 92%;
+    --chip-active: 8 65% 60%;
+    --chip-inactive: 250 15% 20%;
+    --sidebar-background: 250 15% 12%;
+    --sidebar-foreground: 20 30% 92%;
+    --sidebar-primary: 252 20% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 226 18% 16%;
-    --sidebar-accent-foreground: 220 20% 94%;
-    --sidebar-border: 226 16% 20%;
-    --sidebar-ring: 252 56% 64%;
+    --sidebar-accent: 250 12% 22%;
+    --sidebar-accent-foreground: 20 30% 92%;
+    --sidebar-border: 250 12% 24%;
+    --sidebar-ring: 252 20% 60%;
   }
 }
 
@@ -82,9 +100,5 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background-image:
-      radial-gradient(circle at top left, hsl(var(--primary) / 0.08), transparent 30%),
-      radial-gradient(circle at bottom right, hsl(var(--secondary) / 0.08), transparent 30%);
-    background-attachment: fixed;
   }
 }
